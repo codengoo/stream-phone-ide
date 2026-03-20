@@ -1,12 +1,13 @@
-// Prevent multiple instances
-if (!app.requestSingleInstanceLock()) {
-  app.quit();
-  process.exit(0);
-}
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'path'
 import './handlers'
+
+// Prevent multiple instances
+if (!app.requestSingleInstanceLock()) {
+  app.quit()
+  process.exit(0)
+}
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
