@@ -8,7 +8,7 @@ import { DevicesPage, InfoPage } from './pages'
 
 function App(): React.JSX.Element {
   const { theme } = useTheme()
-  const { activeTab, setTab } = useAppTab()
+  const { activeTab } = useAppTab()
   const [settingsModalOpen, setSettingsModalOpen] = useState(false)
 
   // Apply dark class to <html> based on Redux theme state
