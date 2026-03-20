@@ -1,3 +1,8 @@
+// Prevent multiple instances
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+  process.exit(0);
+}
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'path'
@@ -37,7 +42,6 @@ function createWindow(): void {
 }
 
 // ── App lifecycle ─────────────────────────────────────────────────────────────
-
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')
 
