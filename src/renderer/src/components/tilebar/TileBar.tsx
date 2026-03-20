@@ -24,7 +24,7 @@ export default function TitleBar() {
       <div className="flex items-center gap-2 px-3">
         <IconDeviceGamepad2 size={15} className="text-primary" />
         <span className="text-[12px] font-medium text-slate-500 dark:text-slate-400">
-          IEC Game Testing
+          IEC Game Tester
         </span>
       </div>
 

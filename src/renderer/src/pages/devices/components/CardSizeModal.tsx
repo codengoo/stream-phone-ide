@@ -1,5 +1,5 @@
 import { Slider } from '@heroui/react'
-import Modal from '../../../ui/Modal'
+import Modal from '@ui/Modal'
 
 interface Props {
   open: boolean

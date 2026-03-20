@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: stream-viewer
+productName: IEC Game Tester
 directories:
   buildResources: build
 files:
@@ -11,13 +11,21 @@ files:
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
 asarUnpack:
   - resources/**
+compression: maximum
 win:
   executableName: stream-viewer
+  target:
+    - target: nsis
+      arch:
+        - x64
 nsis:
+  oneClick: true
+  perMachine: false
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
+  deleteAppDataOnUninstall: true
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
