@@ -1,6 +1,6 @@
 import { Button } from '@heroui/react'
+import { useTheme } from '../hooks/useAppTheme'
 import Modal from './ui/Modal'
-import { useTheme } from '../hooks/useTheme'
 
 interface Props {
   open: boolean

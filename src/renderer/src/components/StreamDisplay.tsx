@@ -58,7 +58,7 @@ export function StreamDisplay({
   return (
     <div
       ref={containerRef}
-      className="relative flex flex-1 items-center justify-center overflow-hidden bg-[#0d0f1a]"
+      className="relative flex flex-1 items-center justify-center overflow-hidden bg-darkbg"
     >
       {hasExtra && imgSize ? (
         <div className="flex flex-col">

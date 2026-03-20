@@ -54,7 +54,7 @@ export default function DeviceList({
   }
 
   return (
-    <div className="flex h-full flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0d0f1a]">
+    <div className="flex h-full flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-darkbg">
       {/* Header row 1 — title + actions */}
       <div className="flex flex-shrink-0 items-center gap-1 border-b border-slate-200 px-3 py-2 dark:border-slate-800">
         <span className="flex-1 text-[11px] font-semibold uppercase tracking-widest text-slate-400">

@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { api, type DeviceInfo, type CaptureType } from '@services/api'
+import { api, type CaptureType, type DeviceInfo } from '@services/api'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import DeviceList from './components/DeviceList'
 import StreamPanel from './components/StreamPanel'
 
-export default function DevicesPage() {
+export function DevicesPage() {
   const [devices, setDevices] = useState<string[]>([])
   const [selectedDevice, setSelectedDevice] = useState('')
   const [deviceInfos, setDeviceInfos] = useState<Record<string, DeviceInfo>>({})

@@ -1,12 +1,11 @@
-import { app, shell, BrowserWindow, ipcMain, dialog, net as electronNet } from 'electron'
-import { join } from 'path'
-import { createServer } from 'net'
-import { writeFileSync } from 'fs'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { exec } from 'child_process'
+import { app, BrowserWindow, dialog, net as electronNet, ipcMain, shell } from 'electron'
+import { writeFileSync } from 'fs'
+import { createServer } from 'net'
+import { join } from 'path'
 import { promisify } from 'util'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
-import { streamService, setBaseUrl, getBaseUrl } from './services/streamService'
+import { getBaseUrl, setBaseUrl, streamService } from './services/streamService'
 
 const execAsync = promisify(exec)
 
@@ -16,13 +15,13 @@ function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 820,
-    minWidth: 900,
-    minHeight: 600,
+    minWidth: 1280,
+    minHeight: 820,
     show: false,
     frame: false,
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
-    ...(process.platform === 'linux' ? { icon } : {}),
+    icon: join(__dirname, "../../resources/icon.png"),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import Sidebar from './components/Sidebar'
-import TitleBar from './components/TitleBar'
 import SettingsModal from './components/SettingsModal'
-import DevicesPage from './components/pages/devices'
-import InfoPage from './components/pages/info'
-import { useTheme } from './hooks/useTheme'
+import Sidebar from './components/sidebar/Sidebar'
+import TitleBar from './components/tilebar/TileBar'
+import { useAppTab } from './hooks/useAppTab'
+import { useTheme } from './hooks/useAppTheme'
+import { DevicesPage, InfoPage } from './pages'
 
 function App(): React.JSX.Element {
   const { theme } = useTheme()
-  const [activeTab, setActiveTab] = useState<'devices' | 'info'>('devices')
+  const { activeTab, setTab } = useAppTab()
   const [settingsModalOpen, setSettingsModalOpen] = useState(false)
 
   // Apply dark class to <html> based on Redux theme state
@@ -29,23 +29,11 @@ function App(): React.JSX.Element {
   }, [theme])
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50 font-sans text-slate-800 dark:bg-[#0d0f1a] dark:text-slate-200">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50 font-sans text-slate-800 dark:bg-darkbg dark:text-slate-200">
       <TitleBar />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar
-          active={activeTab}
-          onChange={(t) => {
-            if (t === 'settings') {
-              setSettingsModalOpen(true)
-            } else {
-              setActiveTab(t as 'devices' | 'info')
-            }
-          }}
-        />
-        <SettingsModal
-          open={settingsModalOpen}
-          onClose={() => setSettingsModalOpen(false)}
-        />
+        <Sidebar onSettings={() => setSettingsModalOpen(true)} />
+        <SettingsModal open={settingsModalOpen} onClose={() => setSettingsModalOpen(false)} />
         {activeTab === 'devices' ? <DevicesPage /> : <InfoPage />}
       </div>
     </div>

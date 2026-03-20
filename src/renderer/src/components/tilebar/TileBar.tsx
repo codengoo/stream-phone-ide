@@ -1,5 +1,6 @@
+import { IconDeviceGamepad2, IconMinus, IconSquare, IconX } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
-import { IconDeviceMobile, IconMinus, IconSquare, IconSquareX } from '@tabler/icons-react'
+import { TitleBtn } from './components/TileBtn'
 
 export default function TitleBar() {
   const [maximized, setMaximized] = useState(false)
@@ -16,14 +17,14 @@ export default function TitleBar() {
 
   return (
     <div
-      className="flex h-9 flex-shrink-0 select-none items-center border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0d0f1a]"
+      className="flex h-9 flex-shrink-0 select-none items-center border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-darkbg"
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
       {/* App icon + title */}
       <div className="flex items-center gap-2 px-3">
-        <IconDeviceMobile size={15} className="text-primary" />
+        <IconDeviceGamepad2 size={15} className="text-primary" />
         <span className="text-[12px] font-medium text-slate-500 dark:text-slate-400">
-          Stream Viewer
+          IEC Game Testing
         </span>
       </div>
 
@@ -40,45 +41,23 @@ export default function TitleBar() {
           hoverClass="hover:bg-slate-200 dark:hover:bg-slate-700"
           onClick={() => window.streamAPI.winMinimize()}
         >
-          <IconMinus size={13} />
+          <IconMinus size={13} stroke={3} />
         </TitleBtn>
         <TitleBtn
           title={maximized ? 'Restore' : 'Maximize'}
           hoverClass="hover:bg-slate-200 dark:hover:bg-slate-700"
           onClick={handleMaximize}
         >
-          <IconSquare size={12} />
+          <IconSquare size={12} stroke={3} />
         </TitleBtn>
         <TitleBtn
           title="Close"
-          hoverClass="hover:bg-red-500 hover:text-white"
+          hoverClass="hover:bg-red-600 hover:text-white"
           onClick={() => window.streamAPI.winClose()}
         >
-          <IconSquareX size={13} />
+          <IconX size={18} />
         </TitleBtn>
       </div>
     </div>
-  )
-}
-
-function TitleBtn({
-  title,
-  onClick,
-  hoverClass,
-  children
-}: {
-  title: string
-  onClick: () => void
-  hoverClass: string
-  children: React.ReactNode
-}) {
-  return (
-    <button
-      title={title}
-      onClick={onClick}
-      className={`flex h-9 w-11 items-center justify-center text-slate-500 transition-colors dark:text-slate-400 ${hoverClass}`}
-    >
-      {children}
-    </button>
   )
 }
