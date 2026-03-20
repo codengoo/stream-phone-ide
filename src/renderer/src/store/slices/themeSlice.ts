@@ -2,13 +2,13 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 export type Theme = 'system' | 'dark' | 'light'
 
-export interface ThemeState {
+export interface AppThemeState {
   theme: Theme
 }
 
 const saved = localStorage.getItem('theme') as Theme | null
 
-const initialState: ThemeState = {
+const initialState: AppThemeState = {
   theme: saved ?? 'system'
 }
 
