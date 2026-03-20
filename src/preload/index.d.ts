@@ -24,11 +24,6 @@ export interface StreamStatus {
 
 export interface StreamAPI {
   // Window controls
-  winMinimize: () => Promise<void>
-  winMaximize: () => Promise<void>
-  winClose: () => Promise<void>
-  winIsMaximized: () => Promise<boolean>
-
   getHealth: () => Promise<boolean>
   getSources: () => Promise<{ sources: SourceInfo[] }>
   getStatus: () => Promise<StreamStatus>
@@ -46,9 +41,17 @@ export interface StreamAPI {
   getRandomPort: () => Promise<number>
 }
 
+export interface AppAPI {
+  winMinimize: () => Promise<void>
+  winMaximize: () => Promise<void>
+  winClose: () => Promise<void>
+  winIsMaximized: () => Promise<boolean>
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
     streamAPI: StreamAPI
+    appAPI: AppAPI
   }
 }

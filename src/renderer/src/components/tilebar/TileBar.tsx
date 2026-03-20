@@ -6,12 +6,12 @@ export default function TitleBar() {
   const [maximized, setMaximized] = useState(false)
 
   useEffect(() => {
-    window.streamAPI.winIsMaximized().then(setMaximized)
+    window.appAPI.winIsMaximized().then(setMaximized)
   }, [])
 
   async function handleMaximize() {
-    await window.streamAPI.winMaximize()
-    const m = await window.streamAPI.winIsMaximized()
+    await window.appAPI.winMaximize()
+    const m = await window.appAPI.winIsMaximized()
     setMaximized(m)
   }
 
@@ -39,7 +39,7 @@ export default function TitleBar() {
         <TitleBtn
           title="Minimize"
           hoverClass="hover:bg-slate-200 dark:hover:bg-slate-700"
-          onClick={() => window.streamAPI.winMinimize()}
+          onClick={() => window.appAPI.winMinimize()}
         >
           <IconMinus size={13} stroke={3} />
         </TitleBtn>
@@ -53,7 +53,7 @@ export default function TitleBar() {
         <TitleBtn
           title="Close"
           hoverClass="hover:bg-red-600 hover:text-white"
-          onClick={() => window.streamAPI.winClose()}
+          onClick={() => window.appAPI.winClose()}
         >
           <IconX size={18} />
         </TitleBtn>
