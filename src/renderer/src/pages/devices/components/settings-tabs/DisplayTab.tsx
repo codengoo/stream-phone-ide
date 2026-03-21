@@ -11,6 +11,7 @@ export function DisplayTab() {
         label="Card size"
         minValue={100}
         maxValue={280}
+        showSteps={true}
         step={10}
         value={cardSize}
         color="primary"
