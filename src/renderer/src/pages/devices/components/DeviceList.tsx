@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import { Button } from '@heroui/react'
+import type { CaptureType, DeviceInfo } from '@services/api'
 import { IconRefresh, IconSettings2 } from '@tabler/icons-react'
+import { useState } from 'react'
 import DeviceCard from './DeviceCard'
 import SettingsModal from './SettingsModal'
-import { useServerStats } from '@hooks/useServerStats'
-import { BandwidthChart } from '@ui/BandwidthChart'
-import type { DeviceInfo, CaptureType } from '@services/api'
+import { SystemStatus } from './SystemStatus'
 
 interface Props {
   devices: string[]
@@ -18,6 +17,18 @@ interface Props {
   onCaptureTypeChange: (type: CaptureType) => void
 }
 
+export default function DeviceList(props: Props) {
+  const {
+    devices,
+    selectedDevice,
+    deviceInfos,
+    captureType,
+    onSelect,
+    onRefresh,
+    onInfoLoaded,
+    onCaptureTypeChange
+  } = props;
+
 const STORAGE_KEY = 'device-card-size'
 const DEFAULT_SIZE = 140
 
@@ -26,37 +37,27 @@ function getSavedSize(): number {
   return v ? Number(v) : DEFAULT_SIZE
 }
 
-function formatTime(s: number): string {
-  const h = Math.floor(s / 3600)
-  const m = Math.floor((s % 3600) / 60)
-  const sec = s % 60
-  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
-  return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
-}
-
-export default function DeviceList({
-  devices,
-  selectedDevice,
-  deviceInfos,
-  captureType,
-  onSelect,
-  onRefresh,
-  onInfoLoaded,
-  onCaptureTypeChange
-}: Props) {
+// ...existing code...
   const [cardSize, setCardSize] = useState(getSavedSize)
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const { isOnline, bwHistory, currentBw, liveSeconds } = useServerStats()
+  const [settingsTab, setSettingsTab] = useState<'display' | 'server'>('display')
+
 
   function handleSizeChange(size: number) {
     setCardSize(size)
     localStorage.setItem(STORAGE_KEY, String(size))
   }
 
+  // Handler to open settings modal with a specific tab
+  function openSettings(tab: 'display' | 'server') {
+    setSettingsTab(tab)
+    setSettingsOpen(true)
+  }
+
   return (
     <div className="flex h-full flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-darkbg">
       {/* Header row 1 — title + actions */}
-      <div className="flex flex-shrink-0 items-center gap-1 border-b border-slate-200 px-3 py-2 dark:border-slate-800">
+      <div className="flex flex-shrink-0 items-center gap-1 border-b border-slate-200 px-3 py-1 dark:border-slate-800">
         <span className="flex-1 text-[11px] font-semibold uppercase tracking-widest text-slate-400">
           Devices
         </span>
@@ -72,26 +73,6 @@ export default function DeviceList({
         >
           <IconSettings2 size={14} />
         </Button>
-      </div>
-
-      {/* Header row 2 — server stats */}
-      <div className="flex flex-shrink-0 items-center gap-2 border-b border-slate-100 bg-slate-50/60 px-3 py-1 dark:border-slate-800/50 dark:bg-[#0b0d18]/60">
-        <span
-          className={`h-1.5 w-1.5 flex-shrink-0 rounded-full ${isOnline ? 'bg-green-400' : 'bg-red-400'}`}
-          title={isOnline ? 'Server online' : 'Server offline'}
-        />
-        <span className={`text-[10px] ${isOnline ? 'text-green-500 dark:text-green-400' : 'text-red-400'}`}>
-          {isOnline ? 'Online' : 'Offline'}
-        </span>
-        {isOnline && liveSeconds > 0 && (
-          <span className="text-[10px] text-slate-400">⏱ {formatTime(liveSeconds)}</span>
-        )}
-        <div className="ml-auto flex items-center gap-1.5">
-          {bwHistory.length >= 2 && <BandwidthChart data={bwHistory} width={72} height={24} />}
-          <span className="min-w-[52px] text-right text-[10px] tabular-nums text-slate-400">
-            {currentBw} KB/s
-          </span>
-        </div>
       </div>
 
       {/* Device cards */}
@@ -116,6 +97,9 @@ export default function DeviceList({
         )}
       </div>
 
+
+      <SystemStatus onStatusClick={() => openSettings('server')} />
+
       <SettingsModal
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
@@ -123,8 +107,8 @@ export default function DeviceList({
         onCardSizeChange={handleSizeChange}
         captureType={captureType}
         onCaptureTypeChange={onCaptureTypeChange}
+        tab={settingsTab}
       />
     </div>
   )
 }
-

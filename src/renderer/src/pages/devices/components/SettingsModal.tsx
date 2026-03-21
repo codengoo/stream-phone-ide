@@ -1,29 +1,29 @@
-﻿import { useState } from 'react'
-import {
-  Tabs,
-  Tab,
-  Slider,
-  Input,
+﻿import {
   Button,
+  Input,
   Popover,
+  PopoverContent,
   PopoverTrigger,
-  PopoverContent
+  Slider,
+  Tab,
+  Tabs
 } from '@heroui/react'
+import type { CaptureType } from '@services/api'
 import {
-  IconInfoCircle,
   IconBroadcast,
-  IconDeviceUsb,
-  IconEdit,
-  IconDice,
   IconCheck,
-  IconX,
-  IconWifi,
+  IconDeviceUsb,
+  IconDice,
+  IconEdit,
+  IconInfoCircle,
   IconLock,
+  IconServer,
+  IconWifi,
   IconWifi2,
-  IconServer
+  IconX
 } from '@tabler/icons-react'
 import Modal from '@ui/Modal'
-import type { CaptureType } from '@services/api'
+import { useEffect, useState } from 'react'
 
 // ── Storage keys ──────────────────────────────────────────────────────────────
 const HOST_KEY = 'server-host'
@@ -250,6 +250,7 @@ function SignalIcon({ strength }: { strength: LanEntry['signal'] }) {
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
+
 interface Props {
   open: boolean
   onClose: () => void
@@ -257,6 +258,7 @@ interface Props {
   onCardSizeChange: (size: number) => void
   captureType: CaptureType
   onCaptureTypeChange: (t: CaptureType) => void
+  tab?: 'display' | 'server'
 }
 
 export default function SettingsModal({
@@ -265,7 +267,8 @@ export default function SettingsModal({
   cardSize,
   onCardSizeChange,
   captureType,
-  onCaptureTypeChange
+  onCaptureTypeChange,
+  tab = 'display',
 }: Props) {
   const [serverMode, setServerMode] = useState<ServerMode>(
     () => (localStorage.getItem(SERVER_MODE_KEY) as ServerMode) ?? 'local'
@@ -333,12 +336,26 @@ export default function SettingsModal({
     window.streamAPI.setServerConfig(host, port)
   }
 
+  const [selectedTab, setSelectedTab] = useState(tab);
+  // Sync tab prop to state when modal opens
+  useEffect(() => {
+    if (open) setSelectedTab(tab)
+  }, [open, tab])
+
   return (
     <>
       <Modal open={open} onClose={onClose} title="Settings" size="md">
         {/* Fixed height — prevents tab switching from changing modal size */}
         <div className="h-[480px] overflow-y-auto">
-          <Tabs aria-label="Settings" size="sm" variant="solid" color="primary" fullWidth>
+          <Tabs
+            aria-label="Settings"
+            size="sm"
+            variant="solid"
+            color="primary"
+            fullWidth
+            selectedKey={selectedTab}
+            onSelectionChange={setSelectedTab as any}
+          >
 
             {/* ── Display tab ── */}
             <Tab key="display" title="Display">

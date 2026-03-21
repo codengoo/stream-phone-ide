@@ -27,9 +27,11 @@
     "@reduxjs/toolkit": "^2.11.2",
     "@tabler/icons-react": "^3.40.0",
     "apexcharts": "^5.10.4",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "react-apexcharts": "^2.1.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "react-resizable-panels": "^4.7.4"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
