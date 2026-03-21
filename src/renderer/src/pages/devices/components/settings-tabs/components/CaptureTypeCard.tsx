@@ -18,8 +18,7 @@ interface ICaptureTypeCardProps {
 
 export function CaptureTypeCard({ option, selected, onSelect }: ICaptureTypeCardProps) {
   return (
-    <button
-      type="button"
+    <div
       onClick={onSelect}
       className={`group flex w-full items-start gap-3 rounded-xl border-2 p-3 text-left transition-all ${
         selected
@@ -40,14 +39,13 @@ export function CaptureTypeCard({ option, selected, onSelect }: ICaptureTypeCard
       </div>
       <Popover placement="left" showArrow>
         <PopoverTrigger>
-          <button
-            type="button"
+          <div
             onClick={(e) => e.stopPropagation()}
             className="flex-shrink-0 rounded-full p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
             title="More details"
           >
             <IconInfoCircle size={15} />
-          </button>
+          </div>
         </PopoverTrigger>
         <PopoverContent>
           <div className="max-w-[260px] p-3 text-xs leading-relaxed text-default-600">
@@ -56,6 +54,6 @@ export function CaptureTypeCard({ option, selected, onSelect }: ICaptureTypeCard
           </div>
         </PopoverContent>
       </Popover>
-    </button>
+    </div>
   )
 }

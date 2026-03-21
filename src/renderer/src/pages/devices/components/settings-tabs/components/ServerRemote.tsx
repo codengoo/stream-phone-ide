@@ -19,40 +19,40 @@ export function ServerRemote() {
     <div className="space-y-3">
       <Input
         label="Address"
-        labelPlacement="outside"
-        size="sm"
-        variant="bordered"
+        labelPlacement="outside-top"
+        // size="sm"
         placeholder="192.168.1.10"
         value={remoteAddr}
         onValueChange={setRemoteAddr}
-        classNames={{ inputWrapper: 'focus-within:border-primary' }}
       />
-      <div className="flex gap-2">
-        <Input
-          label="Port"
-          labelPlacement="outside"
+
+      <Input
+        label="Password (optional)"
+        labelPlacement="outside-top"
+        // size="sm"
+        type="password"
+        value={remotePass}
+        onValueChange={setRemotePass}
+      />
+
+      <div className="gap-2 grid grid-cols-3">
+        <Button
           size="sm"
-          variant="bordered"
-          value={remotePort}
-          onValueChange={setRemotePort}
-          classNames={{ inputWrapper: 'focus-within:border-primary' }}
-          className="w-28"
-        />
-        <Input
-          label="Password (optional)"
-          labelPlacement="outside"
+          color="primary"
+          onPress={applyRemote}
+          className="col-span-2"
+        >
+          Connect
+        </Button>
+
+        <Button
           size="sm"
-          variant="bordered"
-          type="password"
-          value={remotePass}
-          onValueChange={setRemotePass}
-          classNames={{ inputWrapper: 'focus-within:border-primary' }}
-          className="flex-1"
-        />
+          onPress={applyRemote}
+          className="col-span-1"
+        >
+          Test connection...
+        </Button>
       </div>
-      <Button size="sm" color="primary" variant="flat" onPress={applyRemote} className="w-full">
-        Connect
-      </Button>
     </div>
   )
 }

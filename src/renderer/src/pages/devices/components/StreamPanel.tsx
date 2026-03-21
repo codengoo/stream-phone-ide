@@ -1,16 +1,16 @@
-import { useRef, useEffect } from 'react'
-import {
-  IconCamera,
-  IconArrowLeft,
-  IconHome,
-  IconApps,
-  IconVolume2,
-  IconVolume3,
-  IconPower
-} from '@tabler/icons-react'
 import { StreamDisplay } from '@components/StreamDisplay'
-import DeviceInfoPopover from '@ui/DeviceInfoPopover'
 import type { DeviceInfo } from '@services/api'
+import {
+  IconApps,
+  IconArrowLeft,
+  IconCamera,
+  IconHome,
+  IconPower,
+  IconVolume2,
+  IconVolume3
+} from '@tabler/icons-react'
+import DeviceInfoPopover from '@ui/DeviceInfoPopover'
+import { useEffect, useRef } from 'react'
 
 interface Props {
   device: string
@@ -67,7 +67,7 @@ export default function StreamPanel({ device, streamUrl, streamKey, deviceInfo }
 
   if (!device) {
     return (
-      <div className="flex flex-1 items-center justify-center bg-slate-50 dark:bg-[#0b0d15]">
+      <div className="flex flex-1 items-center justify-center w-full h-full">
         <p className="text-sm text-slate-400">Select a device to start streaming</p>
       </div>
     )

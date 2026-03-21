@@ -53,37 +53,28 @@ export function ServerLocal() {
   const { state: serverState, setServerConfig } = useServerSetting()
   const [changePortOpen, setChangePortOpen] = useState(false)
 
-  const localHost = serverState.serverHost
   const localPort = serverState.serverPort
 
   async function handleRandomPort() {
     try {
       const port = await window.streamAPI.getRandomPort()
       const p = String(port)
-      setServerConfig(localHost, p)
+      setServerConfig('http:/localhost', p)
     } catch {}
   }
 
   return (
     <div className="space-y-2">
-      <Input
-        label="Current address"
-        labelPlacement="outside"
-        size="sm"
-        color="primary"
-        isReadOnly
-        value={`http://${localHost}:${localPort}`}
-      />
       <div className="flex items-center gap-2">
         <Input
           label="Port"
-          labelPlacement="outside"
+          labelPlacement="outside-top"
           size="sm"
-          color="primary"
           isDisabled
           value={localPort}
-          className="flex-1"
+          variant="flat"
         />
+
         <div className="mt-5 flex gap-1">
           <Button
             isIconOnly
