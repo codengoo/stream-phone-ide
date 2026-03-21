@@ -1,4 +1,5 @@
-import { api, type CaptureType, type DeviceInfo } from '@services/api'
+import useCaptureSetting from '@hooks/useCaptureSetting'
+import { api, type DeviceInfo } from '@services/api'
 import { useCallback, useEffect, useState } from 'react'
 import { Group, Panel, Separator } from 'react-resizable-panels'
 import DeviceList from './components/DeviceList'
@@ -10,9 +11,8 @@ export function DevicesPage() {
   const [deviceInfos, setDeviceInfos] = useState<Record<string, DeviceInfo>>({})
   const [streamUrl, setStreamUrl] = useState('')
   const [streamKey] = useState(0)
-  const [captureType, setCaptureType] = useState<CaptureType>(
-    () => (localStorage.getItem('capture-type') as CaptureType) ?? 'minicap'
-  )
+  const { state } = useCaptureSetting()
+  const captureType = state.captureType
 
   const refreshDevices = useCallback(async () => {
     const list = await api.devices().catch(() => [] as string[])
@@ -38,16 +38,11 @@ export function DevicesPage() {
       .catch(() => setStreamUrl(''))
   }, [selectedDevice, captureType])
 
-  function handleCaptureTypeChange(type: CaptureType) {
-    setCaptureType(type)
-    localStorage.setItem('capture-type', type)
-  }
-
   const selectedInfo = deviceInfos[selectedDevice]
 
   return (
     <Group orientation="horizontal">
-      <Panel minSize={"25%"} defaultSize={"75%"}>
+      <Panel minSize={'25%'} defaultSize={'75%'}>
         <DeviceList
           devices={devices}
           selectedDevice={selectedDevice}
@@ -56,11 +51,10 @@ export function DevicesPage() {
           onSelect={setSelectedDevice}
           onRefresh={refreshDevices}
           onInfoLoaded={(serial, info) => setDeviceInfos((prev) => ({ ...prev, [serial]: info }))}
-          onCaptureTypeChange={handleCaptureTypeChange}
         />
       </Panel>
       <Separator />
-      <Panel minSize={"25%"}>
+      <Panel minSize={'25%'}>
         <StreamPanel
           device={selectedDevice}
           streamUrl={streamUrl}

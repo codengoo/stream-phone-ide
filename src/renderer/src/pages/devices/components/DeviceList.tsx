@@ -1,4 +1,5 @@
 import { Button } from '@heroui/react'
+import useDisplaySetting from '@hooks/useDisplaySetting'
 import type { CaptureType, DeviceInfo } from '@services/api'
 import { IconRefresh, IconSettings2 } from '@tabler/icons-react'
 import { useState } from 'react'
@@ -14,40 +15,16 @@ interface Props {
   onSelect: (serial: string) => void
   onRefresh: () => void
   onInfoLoaded: (serial: string, info: DeviceInfo) => void
-  onCaptureTypeChange: (type: CaptureType) => void
 }
 
 export default function DeviceList(props: Props) {
-  const {
-    devices,
-    selectedDevice,
-    deviceInfos,
-    captureType,
-    onSelect,
-    onRefresh,
-    onInfoLoaded,
-    onCaptureTypeChange
-  } = props;
+  const { devices, selectedDevice, deviceInfos, captureType, onSelect, onRefresh, onInfoLoaded } =
+    props
 
-const STORAGE_KEY = 'device-card-size'
-const DEFAULT_SIZE = 140
-
-function getSavedSize(): number {
-  const v = localStorage.getItem(STORAGE_KEY)
-  return v ? Number(v) : DEFAULT_SIZE
-}
-
-// ...existing code...
-  const [cardSize, setCardSize] = useState(getSavedSize)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [settingsTab, setSettingsTab] = useState<'display' | 'server'>('display')
-
-
-  function handleSizeChange(size: number) {
-    setCardSize(size)
-    localStorage.setItem(STORAGE_KEY, String(size))
-  }
-
+  
+  const { state } = useDisplaySetting()
   // Handler to open settings modal with a specific tab
   function openSettings(tab: 'display' | 'server') {
     setSettingsTab(tab)
@@ -69,7 +46,7 @@ function getSavedSize(): number {
           size="sm"
           variant="light"
           title="Settings"
-          onPress={() => setSettingsOpen(true)}
+          onPress={() => openSettings('display')}
         >
           <IconSettings2 size={14} />
         </Button>
@@ -82,7 +59,7 @@ function getSavedSize(): number {
         ) : (
           <div className="flex flex-wrap gap-3">
             {devices.map((serial) => (
-              <div key={serial} style={{ width: cardSize }} className="flex-shrink-0">
+              <div key={serial} style={{ width: state.cardSize }} className="flex-shrink-0">
                 <DeviceCard
                   serial={serial}
                   selected={selectedDevice === serial}
@@ -97,18 +74,9 @@ function getSavedSize(): number {
         )}
       </div>
 
-
       <SystemStatus onStatusClick={() => openSettings('server')} />
 
-      <SettingsModal
-        open={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        cardSize={cardSize}
-        onCardSizeChange={handleSizeChange}
-        captureType={captureType}
-        onCaptureTypeChange={onCaptureTypeChange}
-        tab={settingsTab}
-      />
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} tab={settingsTab} />
     </div>
   )
 }
